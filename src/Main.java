@@ -13,12 +13,24 @@ public class Main {
         facultyList.add(new Faculty("Debasis Sur","EE","B Block(2nd Floor Staffroom)","Assistant Professor","Electric and Hybrid Vehicle"));
         facultyList.add(new Faculty("Bamdeb Banerjee","EE","B Block(2nd Floor Staffroom)","Assistant Professor","Electrical Machines"));
         System.out.println("Enter the department:");
-        String input=sc.nextLine();
+        String input1=sc.nextLine();
         for (Faculty f : facultyList) {
-            if(input.equals(f.department)){
+            if(input1.equals(f.department)){
             f.display();
             System.out.println("\n");
             out=true;
+            }
+        }
+        if(out==false)
+            System.out.println("No results found");
+        System.out.println("Enter the teacher's name:");
+        String input2=sc.nextLine();
+        out=false;
+        for(Faculty f:facultyList){
+            if(f.name.toLowerCase().startsWith(input2)){
+                f.display();
+                System.out.println("\n");
+                out=true;  
             }
         }
         if(out==false)
