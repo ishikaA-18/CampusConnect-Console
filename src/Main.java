@@ -1,23 +1,31 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
 
 public class Main {
     public static void main(String args[]){
         Scanner sc=new Scanner(System.in);
-        boolean out=false;
         ArrayList<Faculty> facultyList = new ArrayList<>();
-
-        facultyList.add(new Faculty("Sandip Saha Chowdhury", "EE","B Block(2nd Floor)","HOD","Control Systems"));
-        facultyList.add(new Faculty("Abhinaba Dutta", "EE","B Block(2nd Floor Staffroom)","CC","MicroProcessor and DSP")); 
-        facultyList.add(new Faculty("Debjani Bhattacharya","EE","B Block(2nd Floor Staffroom)","Assistant Professor","EMFT and Power System"));
-        facultyList.add(new Faculty("Debasis Sur","EE","B Block(2nd Floor Staffroom)","Assistant Professor","Electric and Hybrid Vehicle"));
-        facultyList.add(new Faculty("Bamdeb Banerjee","EE","B Block(2nd Floor Staffroom)","Assistant Professor","Electrical Machines"));
+        boolean out=false;
+        try{
+            File file=new File("data.csv");
+            Scanner fileScanner = new Scanner(file);
+            while(fileScanner.hasNextLine()){
+                String line=fileScanner.nextLine();
+                String[] parts=line.split(",");
+                facultyList.add(new Faculty(parts[0],parts[1],parts[2],parts[3],parts[4]));
+            }
+        }
+        catch(Exception e){
+            System.out.println("File not found");
+        }
         int user_input=0;
 
         while(user_input!=3){
             System.out.println("Welcome To Campus Connect");
             System.out.println("Who is using it? \n Press 1 for student mode \n Press 2 for admin mode.\n Press 3 to exit.");
             user_input=sc.nextInt();
+            sc.nextLine();
             switch(user_input){
                 case 1:
                     System.out.println("Student Mode Activated!!");
