@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 
 public class Main {
     public static void main(String args[]){
@@ -101,6 +103,16 @@ public class Main {
                             System.out.println("Enter the subject name the new teacher will be primarily teaching:");
                             String new_teacher_subject = sc.nextLine();
                             facultyList.add(new Faculty(new_teacher_name,new_teacher_department,new_teacher_room,new_teacher_designation,new_teacher_subject));
+                            try{
+                                BufferedWriter new_entry=new BufferedWriter(new FileWriter("data.csv", true));
+                                String s=new_teacher_name+","+new_teacher_department+","+new_teacher_room+","+new_teacher_designation+","+new_teacher_subject;
+                                new_entry.write(s);
+                                new_entry.newLine();
+                                new_entry.close();
+                            }    
+                            catch(Exception e){
+                                System.out.println("File not found.");
+                            }
                             System.out.println("New Teacher Added Succesfully!");
                         break;
                         case 2:
