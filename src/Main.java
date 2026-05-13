@@ -1,28 +1,10 @@
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 
 public class Main {
     public static void main(String args[]){
         Scanner sc=new Scanner(System.in);
-        ArrayList<Faculty> facultyList = new ArrayList<>();
-        boolean out=false;
-        try{
-            File file=new File("data.csv");
-            Scanner fileScanner = new Scanner(file);
-            while(fileScanner.hasNextLine()){
-                String line=fileScanner.nextLine();
-                String[] parts=line.split(",");
-                facultyList.add(new Faculty(parts[0],parts[1],parts[2],parts[3],parts[4]));
-            }
-        }
-        catch(Exception e){
-            System.out.println("File not found");
-        }
         int user_input=0;
-
+        FacultyRepository repo = new FacultyRepository();
         while(user_input!=3){
             System.out.println("Welcome To Campus Connect");
             System.out.println("Who is using it? \n Press 1 for student mode \n Press 2 for admin mode.\n Press 3 to exit.");
@@ -38,43 +20,17 @@ public class Main {
                         case 1: 
                             System.out.println("Enter the department:");
                             String input1=sc.nextLine();
-                            for (Faculty f : facultyList) {
-                                if(input1.equals(f.department)){
-                                    f.display();
-                                    System.out.println("\n");
-                                    out=true;
-                                }
-                            }
-                            if(out==false)
-                            System.out.println("No results found");
+                            repo.searchByDepartment(input1);
                             break;
                         case 2:
                             System.out.println("Enter the teacher's name:");
                             String input2=sc.nextLine();
-                            out=false;
-                            for(Faculty f:facultyList){
-                                if(f.name.toLowerCase().startsWith(input2)){
-                                    f.display();
-                                    System.out.println("\n");
-                                    out=true;  
-                                }
-                            }
-                            if(out==false)
-                            System.out.println("No results found");
+                            repo.searchByName(input2);
                             break;
                         case 3:
-                            System.out.println("Enter the teacher's name:");
+                            System.out.println("Enter the subject's name:");
                             String input3=sc.nextLine();
-                            out=false;
-                            for(Faculty f:facultyList){
-                                if(f.subject.toLowerCase().startsWith(input3)){
-                                    f.display();
-                                    System.out.println("\n");
-                                    out=true;  
-                                }
-                            }
-                            if(out==false)
-                                System.out.println("No results found");
+                            repo.searchBySubject(input3);
                             break;
                         case 4:
                             System.out.println("Student Mode Deactivated..");
@@ -90,7 +46,7 @@ public class Main {
                     System.out.println("Enter the password");
                     String password_input=sc.nextLine();
                     if(password_input.equals(password)){
-                        System.out.println("Welcome Admin!\nTo Proceed further enter your choice-\nPress 1 to add a new teacher.\nPress 2 to delete a teacher.\nPress 3 to update teacher logic\nPress 4 to exit admin mode.");
+                        System.out.println("Welcome Admin!\nTo Proceed further enter your choice-\nPress 1 to add a new teacher.\nPress 2 to delete a teacher.\nPress 3 to exit admin mode.");
                         int admin_input=sc.nextInt();
                         sc.nextLine();
                         switch(admin_input){
@@ -106,26 +62,17 @@ public class Main {
                                 String new_teacher_designation = sc.nextLine();
                                 System.out.println("Enter the subject name the new teacher will be primarily teaching:");
                                 String new_teacher_subject = sc.nextLine();
-                                facultyList.add(new Faculty(new_teacher_name,new_teacher_department,new_teacher_room,new_teacher_designation,new_teacher_subject));
-                                try{
-                                    BufferedWriter new_entry=new BufferedWriter(new FileWriter("data.csv", true));
-                                    String s=new_teacher_name+","+new_teacher_department+","+new_teacher_room+","+new_teacher_designation+","+new_teacher_subject;
-                                    new_entry.write(s);
-                                    new_entry.newLine();
-                                    new_entry.close();
-                                }    
-                                catch(Exception e){
-                                    System.out.println("File not found.");
-                                }
+                                repo.addTeacher(new_teacher_name,new_teacher_department,new_teacher_room,new_teacher_designation,new_teacher_subject);
                                 System.out.println("New Teacher Added Succesfully!");
                             break;
                             case 2:
-
+                                System.out.println("Deleting a new teacher...");
+                                System.out.println("Enter the teacher name to be deleted:");
+                                String old_teacher_name=sc.nextLine();
+                                repo.deleteTeacher(old_teacher_name);
+                                System.out.println("The teacher has been deleted");
                             break;
                             case 3:
-
-                            break;
-                            case 4:
                                 System.out.println("Admin Mode Deactivated!!");
                             break;
                             default:
