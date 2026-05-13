@@ -55,6 +55,7 @@ a CSV file and reflect immediately on next startup.
 ---
 
 ## Project Structure
+```
 CampusConnect/
 ├── src/
 │   ├── Faculty.java
@@ -62,6 +63,7 @@ CampusConnect/
 │   └── Main.java
 ├── data.csv
 └── README.md
+```
 ---
 
 ## Tech Used
